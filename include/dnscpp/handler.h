@@ -14,6 +14,12 @@
 #pragma once
 
 /**
+ *  Includes
+ */
+#include "records.h"
+#include "error.h"
+
+/**
  *  Begin of namespace
  */
 namespace DNS {
@@ -22,10 +28,11 @@ namespace DNS {
  *  Forward declarations
  */
 class Response;
-class ARecords;
-class AAAARecords;
-class MXRecords;
-class CNAMERecords;
+class A;
+class AAAA;
+class MX;
+class CNAME;
+class Request;
 
 /**
  *  Class definition
@@ -37,8 +44,11 @@ public:
      *  Method that is called when an operation has failed
      *  This normally happens when the nameserver could not be reached, or 
      *  when it sent back a response that could not be parsed.
+     * 
+     *  @param  request         the request that failed without an error
+     *  @param  error           the error type that occurred
      */
-    virtual void onFailure(void *x) {}
+    virtual void onFailure(const Request *request, DNS::Error error) {}
 
     /**
      *  Method that is called when a raw response is received
@@ -47,22 +57,23 @@ public:
      *  However, if you want to read out the original response yourself,
      *  you can override this method.
      * 
+     *  @param  request         the request 
      *  @param  response        the received response
      */
-    virtual void onReceived(const Response &response);
-    
+    virtual void onReceived(const Request *request, const Response &response);
+
     /**
      *  When you made a call for specific records, you can implement
      *  one or more of the following methods to get exactly the information
      *  that you were looking for.
      *
-     *  @param  hostname        the hostname for which we were looking for information
+     *  @param  request         the request done to resolve the records (contains hostname)
      *  @param  records         the received records
      */
-    virtual void onReceived(const char *hostname, const ARecords &records) {}
-    virtual void onReceived(const char *hostname, const AAAARecords &records) {}
-    virtual void onReceived(const char *hostname, const MXRecords &records) {}
-    virtual void onReceived(const char *hostname, const CNAMERecords &records) {}
+    virtual void onSuccess(const Request *request, const Records<A> &records) {}
+    virtual void onSuccess(const Request *request, const Records<AAAA> &records) {}
+    virtual void onSuccess(const Request *request, const Records<MX> &records) {}
+    virtual void onSuccess(const Request *request, const Records<CNAME> &records) {}
 };
 
 /**

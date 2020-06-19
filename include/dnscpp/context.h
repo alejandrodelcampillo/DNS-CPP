@@ -28,6 +28,7 @@ namespace DNS {
  *  Forward declarations
  */
 class Handler;
+class Request;
 
 /**
  *  Class definition
@@ -68,7 +69,7 @@ public:
      *  @param  type        type of record (normally you ask for an 'a' record)
      *  @param  handler     object that will be notified when the query is ready
      */
-    void query(const char *domain, ns_type type, Handler *handler);
+    Request *query(const char *domain, ns_type type, Handler *handler);
 };
     
 /**

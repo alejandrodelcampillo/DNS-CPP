@@ -1,7 +1,7 @@
 /**
- *  Request.h
+ *  ExtendedRequest.h
  * 
- *  Class that encapsulates all data that is needed for a single request
+ *  Class that encapsulates all data that is needed for a single ExtendedRequest
  * 
  *  @author Emiel Bruijntjes <emiel.bruijntjes@copernica.com>
  *  @copyright 2020 Copernica BV
@@ -16,6 +16,7 @@
  *  Dependencies
  */
 #include <memory>
+#include "../include/dnscpp/request.h"
 #include "../include/dnscpp/nameserver.h"
 #include "../include/dnscpp/timer.h"
 #include "query.h"
@@ -36,7 +37,11 @@ class Handler;
 /**
  *  Class definition
  */
-class Request : private Nameserver::Handler, private Connection::Handler, private Timer
+class ExtendedRequest : 
+    public Request,
+    private Nameserver::Handler, 
+    private Connection::Handler, 
+    private Timer
 {
 private:
     /**
@@ -52,7 +57,7 @@ private:
     Query _query;
     
     /**
-     *  When was the request started?
+     *  When was the ExtendedRequest started?
      *  @var Now
      */
     Now _started;
@@ -68,13 +73,6 @@ private:
      *  @var Connection
      */
     std::unique_ptr<Connection> _connection;
-    
-    /**
-     *  User space object that handles this request
-     *  @var Handler
-     */
-    DNS::Handler *_handler;
-    
     
 
     /**
@@ -103,13 +101,13 @@ private:
     virtual void expire() override;
 
     /**
-     *  When does the request expire?
+     *  When does the ExtendedRequest expire?
      *  @return double
      */
     double expires() const;
 
     /** 
-     *  Time out the request because no appropriate response was received in time
+     *  Time out the ExtendedRequest because no appropriate response was received in time
      */
     void timeout();
 
@@ -122,7 +120,12 @@ private:
     /**
      *  Private destructor, the class is self-destructing
      */
-    virtual ~Request();
+    virtual ~ExtendedRequest();
+
+    /**
+     *  Method that can be called to cancel the request.
+     */
+    virtual void cancel() override;
 
 public:
     /**
@@ -132,13 +135,13 @@ public:
      *  @param  type        type of records to look for
      *  @param  handler     user space object interested in the result
      */
-    Request(Core *core, const char *domain, ns_type type, DNS::Handler *handler);
+    ExtendedRequest(Core *core, const char *domain, ns_type type, DNS::Handler *handler);
     
     /**
      *  No copying
      *  @param  that
      */
-    Request(const Request &request) = delete;
+    ExtendedRequest(const ExtendedRequest &ExtendedRequest) = delete;
 };
 
 /**

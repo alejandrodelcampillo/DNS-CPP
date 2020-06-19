@@ -17,6 +17,8 @@
  */
 #include <dnscpp/context.h>
 #include <dnscpp/loop.h>
+#include <dnscpp/error.h>
+#include <dnscpp/records.h>
 #include <dnscpp/handler.h>
 #include <dnscpp/response.h>
 #include <dnscpp/answer.h>

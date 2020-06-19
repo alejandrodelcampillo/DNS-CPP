@@ -2,7 +2,7 @@
  *  Additional.h
  * 
  *  Helper class that can be used to extract a record from the "additional"
- *  section in a respoonse.
+ *  section in a response.
  * 
  *  @author Emiel Bruijntjes <emiel.bruijntjes@copernica.com>
  *  @copyright 2020 Copernica BV

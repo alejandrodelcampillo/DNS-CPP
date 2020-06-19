@@ -154,9 +154,10 @@ public:
 
     /**
      *  Method that is called when a raw response is received
+     *  @param  request         the request
      *  @param  response        the received response
      */
-    virtual void onReceived(const DNS::Response &response) override
+    virtual void onReceived(const DNS::Request *request, const DNS::Response &response) override
     {
         // go look for the A record
         for (size_t i = 0; i < response.answers(); ++i)

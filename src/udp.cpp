@@ -19,6 +19,7 @@
 #include <sys/socket.h>
 #include <stdexcept>
 #include <unistd.h>
+#include <iostream>
 
 /**
  *  Begin of namespace
@@ -77,7 +78,7 @@ void Udp::notify()
         
         // find the ip address from which the message was received
         Ip ip((struct sockaddr *)&from);
-        
+
         // notify the handler
         _handler->onReceived(ip, Response(buffer, bytes));
     }
